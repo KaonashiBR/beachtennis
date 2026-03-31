@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>BT Manager - Arena Dashboard</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="viewer-mode">
+
+    <div id="loading">
+        <div style="font-size:3.5em;">🎾</div><b>A Carregar...</b>
+    </div>
+
+    <div class="navbar">
+        <div class="nav-logo" onclick="window.goHome()"><span>🎾</span><div>BT Manager <small>por Lucas Sibie</small></div></div>
+        <div class="nav-user" onclick="openLoginModal()"><span id="nav-username" class="user-name">Visitante</span><img id="nav-avatar" class="user-avatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png"></div>
+    </div>
+
+    <div id="screen-categories" class="screen">
+        <div class="back-btn" onclick="showScreen('screen-arenas')"><span class="material-icons">arrow_back</span> Voltar</div>
+        <h2 id="title-arena">Nome Arena</h2>
+        
+        <div class="app-tabs">
+            <div class="app-tab active" onclick="switchCatTab('cats')">CATEGORIAS</div>
+            <div class="app-tab" onclick="switchCatTab('arena-rank')">RANKING DA ARENA</div>
+        </div>
+
+        <div id="tab-cats" class="tab-content active">
+            <div id="grid-categories" class="grid-container"></div>
+        </div>
+
+        <div id="tab-arena-rank" class="tab-content">
+            <div class="std-card-full">
+                <table class="rank-table" id="table-arena-ranking">
+                    </table>
+            </div>
+        </div>
+        <button id="btn-add-cat" class="btn-add-float" onclick="openModal('category')" style="display:none;">+</button>
+    </div>
+
+    <div id="modal-player-suggest" class="modal-overlay">
+        <div class="modal-box">
+            <h3 class="modal-title">Atletas Cadastrados</h3>
+            <div id="suggest-list" class="select-list"></div>
+            <button class="btn-std btn-red" onclick="closeSuggest()">Fechar</button>
+        </div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
