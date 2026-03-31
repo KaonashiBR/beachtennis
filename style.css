@@ -1,0 +1,291 @@
+/* --- VARIÁVEIS E BASE --- */
+:root { 
+    --primary: #ff6b00; 
+    --secondary: #0f172a; 
+    --bg-body: #f4f6f8; 
+    --text-dark: #333; 
+    --blue-masc: #2196F3; 
+    --pink-fem: #E91E63; 
+    --fav-color: #ff3b30; 
+    --font-base: 17px; 
+}
+
+body { 
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+    background: var(--bg-body); 
+    color: var(--text-dark); 
+    margin: 0; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    font-size: var(--font-base); 
+}
+
+/* --- BARRA DE NAVEGAÇÃO --- */
+.navbar { 
+    background: white; 
+    padding: 10px 15px; 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
+    z-index: 100; 
+    border-bottom: 3px solid #ff3b30; 
+}
+
+.nav-logo { 
+    font-weight: 800; 
+    font-size: 1.1em; 
+    color: var(--secondary); 
+    display: flex; 
+    align-items: center; 
+    gap: 6px; 
+    cursor: pointer; 
+}
+
+.nav-logo span { font-size: 1.4em; }
+
+.nav-user { 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    cursor: pointer; 
+    padding: 4px; 
+    border-radius: 20px; 
+}
+
+.user-avatar { 
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%; 
+    background: #ddd; 
+    object-fit: cover; 
+}
+
+/* --- ESTRUTURA DE TELAS --- */
+.screen { 
+    display: none; 
+    flex: 1; 
+    overflow-y: auto; 
+    padding: 15px; 
+    padding-bottom: 120px; 
+    box-sizing: border-box; 
+}
+
+.screen.active { display: flex; flex-direction: column; }
+
+.grid-container { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); 
+    gap: 15px; 
+    width: 100%; 
+}
+
+/* --- CARDS --- */
+.std-card { 
+    background: white; 
+    border-radius: 12px; 
+    overflow: hidden; 
+    position: relative; 
+    aspect-ratio: 1 / 1; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    cursor: pointer; 
+    transition: transform 0.2s; 
+}
+
+.std-card:active { transform: scale(0.97); }
+
+.card-img { width: 100%; height: 100%; object-fit: cover; }
+
+.card-overlay { 
+    position: absolute; 
+    bottom: 0; 
+    left: 0; 
+    width: 100%; 
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent); 
+    padding: 30px 10px 10px; 
+    color: white; 
+}
+
+.card-title { font-weight: 700; font-size: 1.2em; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+
+/* Conteúdo de Categorias */
+.cat-card-content { 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    color: white; 
+    font-weight: 900; 
+    font-size: 4.5em; 
+}
+
+.bg-masc { background: var(--blue-masc); }
+.bg-fem { background: var(--pink-fem); }
+.bg-mista { background: linear-gradient(135deg, var(--blue-masc) 50%, var(--pink-fem) 50%); }
+
+/* --- ABAS (TABS) --- */
+.app-tabs { 
+    display: flex; 
+    background: #ddd; 
+    margin-bottom: 15px; 
+    border-radius: 6px; 
+    padding: 4px; 
+}
+
+.app-tab { 
+    flex: 1; 
+    text-align: center; 
+    padding: 10px; 
+    cursor: pointer; 
+    font-weight: 700; 
+    font-size: 0.9em; 
+    border-radius: 4px; 
+    color: #666; 
+}
+
+.app-tab.active { 
+    background: white; 
+    color: var(--secondary); 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+}
+
+/* --- TABELAS DE RANKING --- */
+.rank-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    background: white; 
+}
+
+.rank-table th { 
+    background: #333; 
+    color: white; 
+    padding: 10px; 
+    font-size: 0.85em; 
+    text-align: center; 
+}
+
+.rank-table td { 
+    padding: 10px; 
+    border-bottom: 1px solid #eee; 
+    text-align: center; 
+    font-weight: bold; 
+}
+
+.rank-pos { 
+    width: 28px; 
+    height: 28px; 
+    background: #eee; 
+    border-radius: 50%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    margin: 0 auto; 
+}
+
+/* Cores de Pódio */
+.rank-1 .rank-pos { background: #FFD700; color: #000; }
+.rank-2 .rank-pos { background: #C0C0C0; color: #000; }
+.rank-3 .rank-pos { background: #CD7F32; color: #fff; }
+
+/* --- BOTÕES E INPUTS --- */
+.btn-std { 
+    border: none; 
+    border-radius: 6px; 
+    padding: 12px; 
+    font-weight: 700; 
+    text-transform: uppercase; 
+    color: white; 
+    cursor: pointer; 
+    width: 100%; 
+}
+
+.btn-org { background: var(--primary); }
+.btn-blue { background: var(--secondary); }
+.btn-red { background: #d32f2f; }
+.btn-green { background: #2e7d32; }
+
+.inp-std { 
+    width: 100%; 
+    padding: 12px; 
+    border: 1px solid #ccc; 
+    border-radius: 6px; 
+    margin-bottom: 10px; 
+    box-sizing: border-box; 
+}
+
+.btn-add-float { 
+    position: fixed; 
+    bottom: 80px; 
+    right: 20px; 
+    width: 60px; 
+    height: 60px; 
+    background: var(--primary); 
+    color: white; 
+    border-radius: 50%; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    font-size: 2em; 
+    border: none; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3); 
+    z-index: 900; 
+}
+
+/* --- MODAIS --- */
+.modal-overlay { 
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: rgba(0,0,0,0.7); 
+    display: none; 
+    justify-content: center; 
+    align-items: center; 
+    z-index: 2000; 
+    padding: 20px; 
+}
+
+.modal-box { 
+    background: white; 
+    width: 100%; 
+    max-width: 450px; 
+    padding: 25px; 
+    border-radius: 12px; 
+    max-height: 90vh; 
+    overflow-y: auto; 
+}
+
+/* Lista de Sugestão de Telefone */
+.select-list { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+    margin: 15px 0; 
+}
+
+.select-item { 
+    padding: 12px; 
+    background: #f9f9f9; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    transition: 0.2s; 
+}
+
+.select-item:hover { background: #eef2ff; border-color: var(--blue-masc); }
+
+/* --- UTILITÁRIOS --- */
+#loading { 
+    position: fixed; 
+    top: 0; left: 0; 
+    width: 100%; 
+    height: 100%; 
+    background: white; 
+    z-index: 5000; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+}
