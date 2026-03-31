@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#004e98">
     
-    <title>BT Manager - Arena Dashboard</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="BT Manager">
+    <link rel="apple-touch-icon" href="./icone.png">
+    <link rel="manifest" href="manifest.json">
+    
+    <title>BT Manager</title>
     
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,99 +21,323 @@
 </head>
 <body class="viewer-mode">
 
-    <div id="loading">
-        <div style="font-size:3.5em;">🎾</div><b>A Carregar...</b>
-    </div>
-
-    <div class="navbar">
-        <div class="nav-logo" onclick="window.goHome()">
-            <span>🎾</span>
-            <div>BT Manager <br><small style="font-weight:400; color:#666;">por Lucas Sibie</small></div>
-        </div>
-        <div class="nav-user" onclick="openLoginModal()">
-            <span id="nav-username" class="user-name">Visitante</span>
-            <img id="nav-avatar" class="user-avatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png">
-        </div>
-    </div>
-
-    <div id="screen-arenas" class="screen active">
-        <div class="header-bar">
-            <h2 class="section-title">Minhas Arenas</h2>
-        </div>
-        <div id="grid-arenas" class="grid-container"></div>
-        <button id="btn-add-arena" class="btn-add-float" onclick="openModal('arena')" style="display:none;">+</button>
-    </div>
-
-    <div id="screen-categories" class="screen">
-        <div class="back-btn" onclick="showScreen('screen-arenas')">
-            <span class="material-icons">arrow_back</span> Voltar para Arenas
-        </div>
-        <div class="header-bar">
-            <div>
-                <h2 class="section-title" id="title-arena">Nome Arena</h2>
-            </div>
-        </div>
-
-        <div class="app-tabs">
-            <div class="app-tab active" onclick="switchCatTab('cats')">CATEGORIAS</div>
-            <div class="app-tab" onclick="switchCatTab('arena-rank')">RANKING GERAL DA ARENA</div>
-        </div>
-
-        <div id="tab-cats" class="tab-content active">
-            <div id="grid-categories" class="grid-container"></div>
-        </div>
-
-        <div id="tab-arena-rank" class="tab-content" style="display:none;">
-            <div style="background:white; border-radius:12px; overflow:hidden; border:1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
-                <table class="rank-table" id="table-arena-ranking">
-                    </table>
-            </div>
+<div id="modal-regulamento" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:4000; justify-content:center; align-items:center; padding:20px; box-sizing:border-box;">
+    <div style="background:white; width:100%; max-width:700px; max-height:90vh; border-radius:12px; display:flex; flex-direction:column; overflow:hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+        <div style="background:var(--secondary); color:white; padding:15px; font-weight:bold; display:flex; justify-content:space-between; align-items:center;">
+            <div style="display:flex; align-items:center; gap:8px;"><span class="material-icons">gavel</span> Regulamento Oficial</div>
+            <span class="material-icons" style="cursor:pointer;" onclick="document.getElementById('modal-regulamento').style.display='none'">close</span>
         </div>
         
-        <button id="btn-add-cat" class="btn-add-float" onclick="openModal('category')" style="display:none;">+</button>
+        <div style="display: flex; background: #ddd; border-bottom: 2px solid var(--primary);">
+            <div id="tab-reg-jap" class="reg-tab active" onclick="switchReg('jap')">Formato Japonês</div>
+            <div id="tab-reg-fix" class="reg-tab" onclick="switchReg('fix')">Duplas Fixas</div>
+        </div>
+
+        <div id="content-reg-jap" style="padding:20px; overflow-y:auto; line-height:1.6; text-align:justify; display:block;">
+            <h3 style="text-align:center; margin-top:0; color:var(--primary);">FORMATO JAPONÊS</h3>
+            
+            <div class="reg-chapter">CAPÍTULO I - DISPOSIÇÕES GERAIS</div>
+            <div class="reg-article"><strong>Art. 1º</strong> O torneio será disputado no formato japonês, com fase classificatória em grupos, apuração de classificação individual por atleta e posterior formação de duplas para a fase eliminatória.</div>
+            <div class="reg-article"><strong>Art. 2º</strong> Na fase classificatória, os atletas disputarão partidas em duplas formadas por combinações rotativas, sendo a classificação apurada individualmente.</div>
+            
+            <div class="reg-chapter">CAPÍTULO II - DA FORMAÇÃO DOS GRUPOS</div>
+            <div class="reg-article"><strong>Art. 4º</strong> A fase classificatória será disputada em grupos compostos por, no mínimo, 4 atletas e, no máximo, 5 atletas.</div>
+            <div class="reg-article"><strong>Art. 6º</strong> Cada atleta atuará como parceiro de dupla de cada um dos demais atletas do mesmo grupo uma única vez. Em grupos de 5 atletas, haverá obrigatoriamente 1 atleta de folga em cada rodada.</div>
+
+            <div class="reg-chapter">CAPÍTULO IV - SISTEMA DE JOGO (FASE CLASSIFICATÓRIA)</div>
+            <div class="reg-article"><strong>Art. 9º</strong> Os jogos em duplas serão disputados em set único de 6 games.</div>
+            <div class="reg-article"><strong>Art. 11 e 12º</strong> Não haverá tie-break na fase de grupos. Vence o lado que primeiro alcançar 6 games.</div>
+            <div class="reg-article"><strong>Art. 13º</strong> Não será exigida vantagem mínima de 2 games, sendo válidos placares como 6x5.</div>
+
+            <div class="reg-chapter">CAPÍTULO V - CLASSIFICAÇÃO E DESEMPATE</div>
+            <div class="reg-article"><strong>Art. 16º</strong> Em caso de empate na classificação individual, os critérios de desempate serão aplicados na seguinte ordem:<br>
+            I - <strong>Maior percentagem de vitórias</strong> (vitórias / partidas disputadas);<br>
+            II - <strong>Maior percentagem de games vencidos / Game Average</strong> (games vencidos / games disputados);<br>
+            III - Sorteio.</div>
+            <div class="reg-article"><strong>Art. 17º</strong> O confronto direto não será utilizado como critério de desempate na fase classificatória individual.</div>
+            <div class="reg-article"><strong>Art. 18 e 19º</strong> Quando houver comparação entre atletas de grupos distintos (tamanhos diferentes), é vedada a utilização de critérios brutos absolutos (como saldo total), devendo prevalecer os critérios proporcionais/percentuais.</div>
+
+            <div class="reg-chapter">CAPÍTULO IX - FORMAÇÃO DAS DUPLAS MATA-MATA</div>
+            <div class="reg-article"><strong>Art. 37 e 38º</strong> Os atletas serão organizados em listas distintas conforme sua colocação nos grupos (ex: todos os 1ºs lugares juntos, todos os 2ºs juntos) e ordenados do melhor para o pior desempenho global dentro de sua respectiva faixa.</div>
+            <div class="reg-article"><strong>Art. 40 e 41º</strong> As duplas da fase eliminatória serão formadas em ordem sequencial estrita (o 1º melhor forma dupla com o 2º melhor, o 3º com o 4º, etc). Sobrando 1 atleta na faixa, ele formará dupla com o melhor atleta da faixa seguinte (transbordo).</div>
+
+            <div class="reg-chapter">CAPÍTULO X - CHAVEAMENTO MATA-MATA</div>
+            <div class="reg-article"><strong>Art. 49º</strong> A composição dos confrontos observará a lógica matemática pura onde as melhores duplas enfrentarão as piores duplas (Ex: Seed 1 vs Seed 8, Seed 2 vs Seed 7).</div>
+            
+            <div class="reg-chapter">CAPÍTULO XI - FASE ELIMINATÓRIA</div>
+            <div class="reg-article"><strong>Art. 54 e 55º</strong> Jogos disputados em set único. Vence quem alcançar 6 games.</div>
+            <div class="reg-article"><strong>Art. 56 e 57º</strong> Em caso de empate em 5x5, a partida prosseguirá até 7 games. Se empatar em 6x6, haverá tie-break decisivo até 7 pontos (com necessidade de vantagem mínima de 2 pontos).</div>
+        </div>
+
+        <div id="content-reg-fix" style="padding:20px; overflow-y:auto; line-height:1.6; text-align:justify; display:none;">
+            <h3 style="text-align:center; margin-top:0; color:var(--primary);">FORMATO DUPLAS FIXAS</h3>
+            
+            <div class="reg-chapter">CAPÍTULO I - DISPOSIÇÕES GERAIS</div>
+            <div class="reg-article"><strong>Art. 1º</strong> O torneio será disputado no formato de duplas fixas, onde a mesma parceria de atletas atua em conjunto desde a fase classificatória até a fase eliminatória final.</div>
+            
+            <div class="reg-chapter">CAPÍTULO II - FASE CLASSIFICATÓRIA</div>
+            <div class="reg-article"><strong>Art. 2º</strong> Na fase classificatória (Fase de Grupos), as duplas jogarão no sistema "Round Robin" (todas contra todas dentro do seu respetivo grupo).</div>
+            <div class="reg-article"><strong>Art. 3º</strong> As partidas serão disputadas em set único de 6 games. Em caso de empate em 5x5, vai a 7. Empate em 6x6 joga-se um tie-break até 7 pontos.</div>
+            
+            <div class="reg-chapter">CAPÍTULO III - CLASSIFICAÇÃO E DESEMPATE</div>
+            <div class="reg-article"><strong>Art. 4º</strong> A classificação dentro dos grupos e o ranqueamento geral obedecerão ao princípio da proporcionalidade matemática, sendo vedado o uso de confronto direto ou saldo absoluto.</div>
+            <div class="reg-article"><strong>Art. 5º</strong> Em caso de empate, os critérios aplicados serão na seguinte ordem de prioridade:<br>
+            I - <strong>Maior percentagem de vitórias</strong> (vitórias / partidas disputadas);<br>
+            II - <strong>Maior percentagem de games vencidos / Game Average</strong> (games vencidos / games disputados);<br>
+            III - Sorteio.</div>
+
+            <div class="reg-chapter">CAPÍTULO IV - FASE ELIMINATÓRIA (MATA-MATA)</div>
+            <div class="reg-article"><strong>Art. 6º</strong> O cruzamento das chaves observará a lógica matemática pura, onde as melhores duplas rankeadas enfrentarão as piores duplas (Ex: 1º vs 8º, 2º vs 7º), baseando-se estritamente na posição conquistada no grupo.</div>
+            <div class="reg-article"><strong>Art. 7º</strong> Em caso de empate em 5x5, a partida prosseguirá até 7 games. Se empatar em 6x6, haverá tie-break decisivo até 7 pontos.</div>
+        </div>
+        
+        <div style="text-align:center; margin-top:10px; margin-bottom: 20px;">
+            <button class="btn-std btn-dark" onclick="document.getElementById('modal-regulamento').style.display='none'" style="width: auto; padding: 10px 30px;">Fechar</button>
+        </div>
+    </div>
+</div>
+
+<div id="loading" style="position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(255,255,255,0.9);z-index:3000;display:flex;justify-content:center;align-items:center;flex-direction:column;">
+    <div style="font-size:3.5em;">🎾</div><b>A Carregar...</b>
+</div>
+
+<div class="navbar">
+    <div class="nav-logo" onclick="window.goHome()"><span>🎾</span><div>BT Manager <span style="color:#ff3b30; font-size:0.7em; vertical-align:super;">BETA</span><br><small style="font-weight:400; color:#666;">por Lucas Sibie</small></div></div>
+    <div class="nav-user" onclick="openLoginModal()"><span id="nav-username" class="user-name">Visitante</span><img id="nav-avatar" class="user-avatar" src="https://cdn-icons-png.flaticon.com/512/847/847969.png"></div>
+</div>
+
+<div id="screen-arenas" class="screen active">
+    <div class="header-bar">
+        <h2 class="section-title">Arenas</h2>
+        <button onclick="showGlobalRanking()" class="btn-std btn-dark" style="width: auto; margin:0; padding: 8px 12px; font-size: 0.85em;">🌍 Ranking Global</button>
+    </div>
+    
+    <div style="background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%); color: white; padding: 15px; border-radius: 12px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
+        <div style="font-weight: 800; font-size: 1.1em; margin-bottom: 5px;">👑 Use o BT Manager na sua Arena</div>
+        <div style="font-size: 0.85em; color: #cbd5e1; margin-bottom: 12px;">Destrave a criação de torneios, ligas e chaves automáticas.</div>
+        <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <a href="https://wa.me/5543999199481?text=Ola%20Lucas,%20quero%20usar%20o%20BT%20Manager!" target="_blank" style="background: #25D366; color: white; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-weight: 700; font-size: 0.9em; display: flex; align-items: center; gap: 5px;"><span class="material-icons" style="font-size: 1.2em;">chat</span> WhatsApp</a>
+            <a href="https://instagram.com/lsibie" target="_blank" style="background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; text-decoration: none; padding: 8px 12px; border-radius: 6px; font-weight: 700; font-size: 0.9em; display: flex; align-items: center; gap: 5px;"><span class="material-icons" style="font-size: 1.2em;">photo_camera</span> Instagram</a>
+            <button id="btn-install-app" onclick="installApp()" style="display: none; background: #000; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 700; font-size: 0.9em; align-items: center; gap: 5px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.3);"><span class="material-icons" style="font-size: 1.2em;">install_mobile</span> Instalar App</button>
+        </div>
     </div>
 
-    <div id="admin-player-controls" style="display:none;">
-        <input type="text" id="pName" class="inp-std" placeholder="Nome do Atleta">
-        <input type="tel" id="pPhone" class="inp-std" placeholder="Telefone (Clique para buscar)" onclick="window.openAtletaSuggest()" readonly>
-        <button class="btn-std btn-org" onclick="window.addPlayer()">Adicionar</button>
+    <div id="grid-arenas" class="grid-container"></div>
+    <button id="btn-add-arena" class="btn-add-float" onclick="openModal('arena')" style="display:none;">+</button>
+    <div style="text-align:center; margin-top:55px; color:#999; font-size:0.9em;" id="msg-login">Clique no bonequinho para Login e ver as arenas completas.</div>
+</div>
+
+<div id="screen-global-ranking" class="screen">
+    <div class="back-btn" onclick="showScreen('screen-arenas')"><span class="material-icons">arrow_back</span> Voltar para Home</div>
+    <div class="header-bar">
+        <div><h2 class="section-title">🌍 Ranking Global</h2><div style="font-size:0.9em; color:#777;">Os melhores de todas as arenas</div></div>
+    </div>
+    <div style="background:white; border-radius:8px; overflow:hidden; border:1px solid #ddd; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        <table class="rank-table" id="table-global-ranking">
+            <tr><td style="padding:20px;">A carregar...</td></tr>
+        </table>
+    </div>
+</div>
+
+<div id="screen-categories" class="screen">
+    <div class="back-btn" onclick="showScreen('screen-arenas')"><span class="material-icons">arrow_back</span> Voltar para Arenas</div>
+    <div class="header-bar"><div><h2 class="section-title" id="title-arena">Nome Arena</h2><div style="font-size:0.9em; color:#777;">Categorias</div></div></div>
+    <div id="grid-categories" class="grid-container"></div>
+    <button id="btn-add-cat" class="btn-add-cat-float btn-add-float" onclick="openModal('category')" style="display:none;">+</button>
+</div>
+
+<div id="screen-tournaments" class="screen">
+    <div class="back-btn" onclick="showScreen('screen-categories')"><span class="material-icons">arrow_back</span> Voltar para Categorias</div>
+    <div class="header-bar"><div><h2 class="section-title" id="title-cat">Categoria</h2></div></div>
+    <div class="tabs"><div class="tab active" onclick="switchTab('tournaments')">TORNEIOS</div><div class="tab" onclick="switchTab('ranking')">RANKING</div></div>
+    <div id="tab-tournaments" class="tab-content active">
+        <div id="grid-tournaments" class="grid-container"></div>
+        <button id="btn-add-tourney" class="btn-add-tourney-float btn-add-float" onclick="openModal('tournament')" style="display:none;">+</button>
+    </div>
+    <div id="tab-ranking" class="tab-content"><div style="background:white; border-radius:8px; overflow:hidden; border:1px solid #ddd;"><table class="rank-table" id="table-ranking"></table></div></div>
+</div>
+
+<div id="screen-app" class="screen">
+    <div class="status-bar">
+        <div onclick="exitApp()" style="cursor:pointer; display:flex; align-items:center;"><span class="material-icons" style="font-size:1.2em;">arrow_back</span> Sair</div>
+        <div style="display:flex; align-items:center; gap:5px;">
+            <button onclick="document.getElementById('modal-regulamento').style.display='flex'" style="background:transparent; border:none; color:white; cursor:pointer; padding: 2px;" title="Ler Regulamento"><span class="material-icons" style="font-size: 1.2em; color: #FFD700;">menu_book</span></button>
+            <span class="conn-dot"></span> <span id="app-status">ONLINE</span>
+            <button onclick="shareLink()" style="background:transparent; border:none; color:white; cursor:pointer;" title="Partilhar Link"><span class="material-icons">link</span></button>
+            <button onclick="tryAdmin()" id="btn-lock" style="background:transparent; border:1px solid #aaa; padding:2px 5px; color:white;" title="Acesso Admin">🔒</button>
+        </div>
+    </div>
+    <h2 id="t-title-header" style="text-align:center; margin:10px 0; text-transform:uppercase;">Torneio</h2>
+    
+    <div class="admin-only" style="background:white; padding:10px; border-radius:8px; border:1px solid #ddd; margin-bottom:10px;">
+        
+        <div style="display:flex; gap:5px; margin-bottom:5px;">
+            <input type="tel" id="pPhone" class="inp-std auth-input" style="margin:0; width:45%; font-size:0.9em;" placeholder="Telemóvel (Opcional)" autocomplete="off">
+            <input type="text" id="pName" class="inp-std auth-input" style="margin:0; width:55%;" placeholder="Nome da dupla/atleta..." autocomplete="off">
+            <button class="btn-std btn-org" style="width:auto;" onclick="addPlayer()">+ Add</button>
+        </div>
+        
+        <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">
+            <button class="btn-std btn-blue" style="width:auto;" onclick="addGroup()">+ Grupo</button>
+            <button class="btn-std btn-green" style="width:auto;" onclick="autoGroupsCBT()">⚡ Grupos CBT</button>
+            <button onclick="setMode('individual')" id="btn-mod-ind" class="btn-std" style="width:auto;">Individual</button>
+            <button onclick="setMode('fixed')" id="btn-mod-fix" class="btn-std" style="width:auto;">Fixas</button>
+            <button onclick="openConfigKnockout()" class="btn-std btn-org" style="width:auto;">⚔️ Mata-Mata</button>
+            <button onclick="resetKnockout()" class="btn-std btn-red" style="width:auto;">❌ Excluir Mata-Mata</button>
+            <button onclick="openFinalsModal()" class="btn-std btn-gold" style="width:auto;">🏆 Encerrar</button>
+            <button onclick="resetT()" class="btn-std btn-red" style="width:auto;">Reset</button>
+            <button onclick="exportData()" class="btn-std btn-dark" style="width:auto;">💾 Backup</button>
+            <button onclick="document.getElementById('import-file').click()" class="btn-std btn-dark" style="width:auto;">📂 Restaurar</button>
+            <button onclick="forceSave()" class="btn-std btn-green" style="width:auto;">✅ Salvar Tudo</button>
+            <input type="file" id="import-file" style="display:none;" accept=".json" onchange="importData(this)">
+        </div>
     </div>
 
-    <div id="modal-player-suggest" class="modal-overlay" style="display:none;">
-        <div class="modal-box">
-            <h3 class="modal-title">Atletas Registrados</h3>
-            <p style="font-size: 0.8em; color: #666;">Selecione um atleta para preencher automaticamente.</p>
-            <div id="suggest-list" class="select-list">
+    <div class="app-tabs">
+        <div class="app-tab" onclick="switchAppView('queue')">FILA DE JOGOS</div>
+        <div class="app-tab active" onclick="switchAppView('groups')">GRUPOS</div>
+        <div class="app-tab" onclick="switchAppView('bracket')">MATA-MATA</div>
+    </div>
+
+    <div id="view-queue" class="view-section">
+        <div class="group-box" style="border-color:var(--primary); max-width:800px; margin:0 auto;">
+            <div class="group-header" style="background:var(--primary); color:white; justify-content:center;">🎾 FILA DA FASE DE GRUPOS</div>
+            <div id="queue-container" style="padding: 10px; background: white; border-radius: 0 0 8px 8px;"></div>
+        </div>
+    </div>
+
+    <div id="view-groups" class="view-section active">
+        <div class="board">
+            <div class="column" id="col-pool">
+                <div style="background:var(--secondary); color:white; padding:8px; font-weight:bold; display:flex; justify-content:space-between; font-size:0.9em; border-radius: 8px 8px 0 0;">
+                    <span>RESERVAS (<span id="pool-cnt">0</span>)</span>
+                    <button class="admin-only btn-std" style="background:white; color:var(--secondary); width:auto; padding:0px 5px; margin:0; font-size:1em;" onclick="distribute()">Distribuir</button>
                 </div>
-            <button class="btn-std btn-red" onclick="window.closeSuggest()" style="margin-top:15px;">Cancelar</button>
-        </div>
-    </div>
-
-    <div id="modal-overlay" class="modal-overlay" style="display:none;">
-        <div class="modal-box">
-            <h3 id="modal-h3">Criar Novo</h3>
-            <input type="hidden" id="modal-type">
-            <input type="hidden" id="modal-id">
-            
-            <label class="modal-label">Nome</label>
-            <input type="text" id="inp-name" class="inp-std">
-            
-            <div id="field-arena" style="display:none;">
-                <label class="modal-label">URL da Imagem</label>
-                <input type="text" id="inp-url" class="inp-std">
+                <div id="pool-list" style="padding:5px; display:flex; flex-direction:column; gap:2px;"></div>
             </div>
-
-            <div style="display:flex; gap:10px; margin-top:20px;">
-                <button class="btn-std btn-green" onclick="window.saveModal()">Guardar</button>
-                <button class="btn-std btn-red" onclick="window.closeModal()">Sair</button>
-            </div>
+            <div id="groups-container"></div>
         </div>
+        
+        <div id="general-ranking-container" style="margin-top: 20px; width: 100%;"></div>
     </div>
-
-    <div class="app-footer">
-        BT Manager © 2026 | Desenvolvido por <a href="https://instagram.com/lsibie" target="_blank">@LSIBIE</a>
+    
+    <div id="view-bracket" class="view-section">
+        <div id="bracket-container" style="width:100%; max-width:600px; margin:0 auto 40px;"></div>
     </div>
+</div>
 
-    <script type="module" src="app.js"></script>
+<div class="app-footer">Todos os direitos reservados © 2026<br>Desenvolvido por <a href="https://instagram.com/lsibie" target="_blank">@LSIBIE</a></div>
+
+<div id="modal-login">
+    <div class="modal-box">
+        <h3 class="modal-title">Entrar no Sistema</h3>
+        
+        <input type="email" id="login-email" class="inp-std auth-input" placeholder="O seu e-mail" style="margin-bottom: 10px;">
+        <input type="password" id="login-pwd" class="inp-std auth-input" placeholder="A sua palavra-passe" style="margin-bottom: 15px;">
+        
+        <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+            <button class="btn-std btn-blue" onclick="doEmailLogin()">Entrar</button>
+            <button class="btn-std btn-green" onclick="doEmailSignUp()">Criar Conta</button>
+        </div>
+        
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        
+        <button class="btn-login-opt btn-google" onclick="doGoogleLogin()">Ou entre com o Google (Gmail)</button>
+        <button class="btn-login-opt btn-logout" onclick="closeLoginModal()" style="margin-top: 5px;">Cancelar</button>
+    </div>
+</div>
+
+<div id="modal-player-select"><div class="modal-box"><h3 class="modal-title">Selecionar Jogador</h3><div id="select-list-container" class="select-list"></div><button class="btn-std btn-red" onclick="document.getElementById('modal-player-select').style.display='none'" style="margin-top:10px;">Cancelar</button></div></div>
+
+<div id="modal-overlay"><div class="modal-box"><h3 class="modal-title" id="modal-h3">Criar</h3><input type="hidden" id="modal-type"><input type="hidden" id="modal-id"><div id="field-common"><label class="modal-label">Nome</label><input type="text" id="inp-name" class="inp-std auth-input"></div><div id="field-arena" style="display:none;"><label class="modal-label">Imagem de Capa</label><img id="img-preview" class="preview-img" src=""><div style="display:flex;gap:10px;margin-bottom:10px;"><button class="btn-std btn-blue" onclick="document.getElementById('file-upload').click()">📂 Upload</button><input type="file" id="file-upload" accept="image/*" style="display:none" onchange="handleFileSelect(this)"></div><input type="text" id="inp-url" class="inp-std auth-input" placeholder="Ou cole o link..." oninput="updatePreview(this.value)"><label class="modal-label" style="margin-top:10px;">Administradores (E-mails separados por vírgula)</label><input type="text" id="inp-arena-managers" class="inp-std auth-input" placeholder="email@gmail.com, parceiro@gmail.com"></div>
+
+<div id="field-category" style="display:none;">
+    <label class="modal-label">Estilo</label>
+    <select id="inp-cat-type" class="inp-std auth-input"><option value="masc">Masculino (Azul)</option><option value="fem">Feminino (Rosa)</option><option value="mista">Mista (Diagonal)</option></select>
+    <label class="modal-label">Sigla</label>
+    <input type="text" id="inp-cat-short" class="inp-std auth-input">
+    
+    <label class="modal-label">Pontuação Ranking</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <input type="number" id="pts-1" class="inp-std auth-input" placeholder="1º (Campeão)">
+        <input type="number" id="pts-2" class="inp-std auth-input" placeholder="2º (Vice)">
+        <input type="number" id="pts-3" class="inp-std auth-input" placeholder="3º Lugar">
+        <input type="number" id="pts-4" class="inp-std auth-input" placeholder="4º Lugar">
+        <input type="number" id="pts-quartas" class="inp-std auth-input" placeholder="Quartas (5º a 8º)">
+        <input type="number" id="pts-part" class="inp-std auth-input" placeholder="Participação">
+    </div>
+</div>
+
+<div id="field-pwd" style="display:none;"><label class="modal-label">Palavra-passe</label><input type="text" id="inp-pwd" class="inp-std auth-input"></div><div style="display:flex;gap:10px;margin-top:20px;"><button class="btn-std btn-green" onclick="saveModal()">Guardar</button><button class="btn-std btn-red" onclick="closeModal()">Cancelar</button></div></div></div>
+
+<div id="modal-knockout"><div class="modal-box">
+    <h3 class="modal-title">Configurar Mata-Mata</h3>
+    <p style="font-size:0.9em;color:#666;">Classificados por grupo:</p>
+    <div id="knockout-config-list" style="max-height:40vh;overflow-y:auto;margin-bottom:10px;"></div>
+    
+    <div id="knockout-summary" style="background:#e3f2fd; color:#0d47a1; padding:10px; border-radius:6px; margin-bottom:15px; font-weight:bold; font-size:0.9em;">
+    </div>
+    
+    <div style="display:flex;gap:10px;">
+        <button class="btn-std btn-org" onclick="execKnockout()">Gerar Chaves</button>
+        <button class="btn-std btn-red" onclick="document.getElementById('modal-knockout').style.display='none'">Cancelar</button>
+    </div>
+</div></div>
+
+<div id="modal-finals"><div class="modal-box">
+    <h3 class="modal-title">Encerrar & Pontuar</h3>
+    
+    <label class="modal-label">🥇 1º Lugar (Campeões)</label>
+    <div style="display:flex; gap:5px;">
+        <select id="sel-win-1a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-win-1b" class="inp-std auth-input" style="margin:0;"></select>
+    </div>
+    
+    <label class="modal-label" style="margin-top:10px;">🥈 2º Lugar (Vices)</label>
+    <div style="display:flex; gap:5px;">
+        <select id="sel-win-2a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-win-2b" class="inp-std auth-input" style="margin:0;"></select>
+    </div>
+    
+    <label class="modal-label" style="margin-top:10px;">🥉 3º Lugar</label>
+    <div style="display:flex; gap:5px;">
+        <select id="sel-win-3a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-win-3b" class="inp-std auth-input" style="margin:0;"></select>
+    </div>
+    
+    <label class="modal-label" style="margin-top:10px;">🏅 4º Lugar</label>
+    <div style="display:flex; gap:5px;">
+        <select id="sel-win-4a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-win-4b" class="inp-std auth-input" style="margin:0;"></select>
+    </div>
+    
+    <label class="modal-label" style="margin-top:10px;">🎖️ Perdedores das Quartas (Até 8 pessoas)</label>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px;">
+        <select id="sel-q-1a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-q-1b" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-q-2a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-q-2b" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-q-3a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-q-3b" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-q-4a" class="inp-std auth-input" style="margin:0;"></select>
+        <select id="sel-q-4b" class="inp-std auth-input" style="margin:0;"></select>
+    </div>
+    
+    <div style="display:flex;gap:10px;margin-top:20px;">
+        <button class="btn-std btn-gold" onclick="submitPoints()">Confirmar</button>
+        <button class="btn-std btn-red" onclick="document.getElementById('modal-finals').style.display='none'">Cancelar</button>
+    </div>
+</div></div>
+
+<div id="modal-roulette" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(15, 23, 42, 0.95); z-index:4000; justify-content:center; align-items:center; flex-direction:column; color:white; font-family:'Poppins', sans-serif;">
+    <h2 style="color:var(--primary); font-size:1.8em; margin-bottom:30px; text-transform:uppercase; letter-spacing:2px;">Sorteio das Chaves</h2>
+    <div id="roulette-player" style="font-size:2em; font-weight:700; margin-bottom:10px; text-align:center;">Nome do Atleta</div>
+    <div style="font-size:1em; margin-bottom:20px; color:#aaa;">vai para...</div>
+    <div id="roulette-group" style="font-size:3em; font-weight:900; color:#fff; background:#222; padding:20px 40px; border-radius:12px; border:3px solid #555; transition: all 0.1s; text-align:center; min-width: 250px;">?</div>
+    <button id="btn-skip-roulette" class="btn-std btn-dark" style="margin-top:40px; width:auto; padding:10px 20px;">Pular Animação</button>
+</div>
+
+<script type="module" src="app.js"></script>
+
 </body>
 </html>
